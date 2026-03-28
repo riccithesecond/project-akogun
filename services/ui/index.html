@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Project Akogun SIEM</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+:root{--bg:#080c10;--bg2:#0d1117;--bg3:#111820;--border:#1e2d3d;--accent:#00d4ff;--accent2:#ff6b35;--accent3:#7fff6b;--accent4:#b06bff;--text:#c9d8e8;--text-dim:#5a7a96;--text-bright:#eaf4ff;--red:#ff4466;--yellow:#ffd166;--mono:'Courier New',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+nav{background:#0d1117;border-bottom:1px solid var(--border);padding:0 1.5rem;height:52px;display:flex;align-items:center;justify-content:space-between;}
+.logo{color:var(--accent);font-size:0.85rem;letter-spacing:0.15em;}
+.logo span{color:var(--text-dim);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent3);display:inline-block;margin-right:6px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.status{font-size:0.65rem;color:var(--accent3);}
+.main{display:flex;flex-direction:column;flex:1;overflow:hidden;padding:1rem;gap:0.75rem;}
+.tabs{display:flex;border-bottom:1px solid var(--border);}
+.tab{font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.6rem 1.5rem;cursor:pointer;border:none;background:transparent;color:var(--text-dim);border-bottom:2px solid transparent;}
+.tab:hover{color:var(--text);}
+.tab.active.kql{color:var(--accent4);border-bottom-color:var(--accent4);}
+.tab.actve.spl{color:var(--accent2);border-bottom-color:var(--accent2);}
+.tab.active.sql{color:var(--yellow);border-bottom-color:var(--yellow);}
+.editor-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:4px;}
+textarea{width:100%;height:150px;background:var(--bg2);color:var(--text-bright);border:none;outline:none;font-family:var(--mono);font-size:0.82rem;padding:1rem;resize:none;line-height:1.7;}
+.controls{display:flex;gap:0.75rem;align-items:center;}
+.btn{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1.5rem;border:none;border-radius:3px;cursor:pointer;font-weight:700;}
+.btn.kql{background:var(--accent4);color:#000;}
+.btn.spl{background:var(--accent2);color:#000;}
+.btn.sql{background:var(--yellow);color:#000;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.sql-preview{font-size:0.7rem;color:var(--text-dim);background:#111820;border:1px solid var(--border);border-radius:3px;padding:0.5rem 0.75rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.results-wrap{flex:1;overflow:hidden;display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--border);border-radius:4px;}
+.results-header{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 1rem;border-bottom:1px solid var(--border);background:#111820;}
+.results-label{font-size:0.65rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.15em;}
+.results-count{font-size:0.65rem;color:var(--accent3);}
+.table-wrap{overflow:auto;flex:1;}
+table{width:100%;border-collapse:collapse;font-size:0.72rem;}
+th{text-align:left;padding:0.5rem 0.75rem;font-size:0.6rem;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);background:#111820;position:sticky;top:0;}
+td{padding:0.45rem 0.75rem;border-bottom:1px solid rgba(30,45,61,0.5);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.empty{display:flex;align-items:center;justify-content:center;flex:1;color:var(--text-dim);font-size:0.8rem;padding:2rem;}
+.error{color:var(--red);background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);border-radius:3px;padding:0.75rem 1rem;margin:1rem;font-size:0.75rem;}
+.spinner{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">PROJECT <span>//</span> AKOGUN</div>
+  <div class="status"><span class="dot"></span>SIEM v1.0 - DUCKDB CORE</div>
+</nav>
+<div id="root"></div>
+<script>
+const API = 'http://192.168.1.160:8001';
+const DEFAULTS = {
+  kql: 'imProcessCreate\n| where TargetProcessName contains "powershell"\n| limit 50',
+  spl: 'search index=sysmon EventCode=1 | stats count by Computer | head 20',
+  sql: "SELECT * FROM read_parquet('/home/xango/akogun/data/parquet/*.parquet') LIMIT 50"
+};
+</script>
+<script type="text/babel">
+const {useState, useCallback, useEffect} = React;
+function App() {
+  const [tab, setTab] = useState('kql');
+  const [queries, setQueries] = useState(DEFAULTS);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [sqlPreview, setSqlPreview] = useState('');
+
+  const run = useCallback(async () => {
+    setLoading(true); setError(null); setResult(null); setSqlPreview('');
+    try {
+      const r = await fetch(API+'/query', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({query: queries[tab], language: tab})
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.detail || 'Query failed');
+      setResult(d);
+      setSqlPreview(d.translated_sql);
+    } catch(e) { setError(e.message); }
+    finally { setLoading(false); }
+  }, [tab, queries]);
+
+  useEffect(() => {
+    const h = e => { if ((e.ctrlKey||e.metaKey) && e.key==='Enter') run(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [run]);
+
+  return (
+    <div className="main">
+      <div className="tabs">
+        {['kql','spl','sql'].map(t => (
+          <button key={t} className={'tab '+t+(tab===t?' active':'')} onClick={()=>setTab(t)}>
+            {t.toUpperCase()}
+          </button>
+        ))}
+      </div>
+      <div className="editor-wrap">
+        <textarea
+          value={queries[tab]}
+          onChange={e => setQueries(q => ({...q, [tab]: e.target.value}))}
+          spellCheck={false}
+        />
+      </div>
+      <div className="controls">
+        <button className={'btn '+tab} onClick={run} disabled={loading}>
+          {loading ? 'Running...' : 'Run Query (Ctrl+Enter)'}
+        </button>
+        {sqlPreview && <div className="sql-preview">SQL: {sqlPreview}</div>}
+      </div>
+      <div className="results-wrap">
+        <div className="results-header">
+          <span className="results-label">Results</span>
+          {result && <span className="results-count">{result.row_count} rows</span>}
+        </div>
+        {loading && <div className="empty"><span className="spinner"></span>Executing query...</div>}
+        {error && !loading && <div className="error">Error: {error}</div>}
+        {!loading && !error && !result && <div className="empty">Run a query to see results</div>}
+        {!loading && !error && result && result.row_count === 0 && <div className="empty">Query returned 0 rows</div>}
+        {!loading && !error && result && result.row_count > 0 && (
+          <div className="table-wrap">
+            <table>
+              <thead><tr>{result.columns.map(c=><th key={c}>{c}</th>)}</tr></thead>
+              <tbody>{result.rows.map((row,i)=>(
+                <tr key={i}>{row.map((cell,j)=><td key={j} title={String(cell)}>{String(cell??'')}</td>)}</tr>
+              ))}</tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
