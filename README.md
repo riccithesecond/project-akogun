@@ -1,4 +1,4 @@
-Akogun is a modern detection engineering platform built as a security data detection layer on top of it.  It is named after the Yoruba term meaning "One who repels war."
+Akogun is a modern detection engineering platform built as a security data lake with a detection layer on top of it.  It is named after the Yoruba term meaning "One who repels war."
 
 Akogun is a custom-built SIEM and threat hunting platform, utilized as a learning platform and portfolio builder.  It runs on a Intel NUC using DuckDB and Parquet as the query engine and core storage layer.
 
