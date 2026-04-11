@@ -1,0 +1,49 @@
+
+## Status
+Accepted
+
+## Context
+
+The original architecture would have included a RaspberryPi as a dedicated network sensor running ZEEK on the lab VLAN.  The lab VMs run inside VMWare within a Windows Desktop on an internal virtual switch.  A physical RaspberryPi on the home network cannot tap a virtual switch inside a hypervisor on different machine.
+
+Two decisions are needed:
+	1. Where to run Zeek?
+	2. When to run Zeek?
+
+## Decision
+
+Remove the RaspberryPi from the architecture.
+
+Defer Zeek to Phase 3
+	• Will run as an Ubuntu VM on the Windows Desktop internal virtual switch where it can see all VM traffic directly
+
+Phase 1 and 2 use Sysmo endpoint telemetry only.  Sysmon EID 3 will capture network connection metadata sufficient for most endpoint detection use cases in that phase.
+
+
+## Consequences
+
+Positive:
+	- Phase 1 and 2 are simpler with one less telemetry
+	- Desk Ram budget is preserved for core lab VMs
+	- Pi retired reduces physical hardware complexity
+	- Zeek added at the right time when network connections are needed
+
+Negative:
+	- No network-layer visibility in Phases 1 and 3
+	- JA3 fingerprinting, DNS tunneling detection and full session metadata deferred until Phase 3
+	- Some ATT&CK network techniques can't be detected until Phase 3
+
+## What Sysmon covers without Zeek
+
+Sysmon EID 3 captures process, src IP, dst IP, port and DNS resolution for all network connections.   This covers lateral movement, C2 connections by process, and port-based detection.  What it won’t cover is session metadata, tls fingerprints, http content , and dns query analysis.  That would require Zeek.
+
+
+## Phase 3 Zeek Plan
+
+Zeek will run on a minimal Ubuntu VM on the Vmware internal virtual switch alongside the DC and victim VMs.  It will forward logs to Fluent Bit on the NUC via TCP.  Lua normalization scripts will map Zeek fields to ASIM NetworkSession and DNS schemas.
+
+## Production Scale Consideration
+
+Enterprise networks run dedicated network sensors at each segment.  Zeek is deployed at scale by CrowdStrike, CoreLight, and other commercial products.  The VM-based approach mirrors the software sensor pattern used in cloud-native environments where physical taps are not available.
+
+
