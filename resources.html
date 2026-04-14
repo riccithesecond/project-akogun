@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detection Engineering Resource Catalogue — Project Akogun</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1117;color:#c9d1d9;line-height:1.6}
+.page{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
+.hdr{margin-bottom:2.5rem;border-bottom:1px solid #21262d;padding-bottom:2rem}
+.hdr-title{font-size:24px;font-weight:600;color:#f0f6fc;margin-bottom:6px}
+.hdr-sub{font-size:14px;color:#8b949e;max-width:680px;line-height:1.7}
+.hdr-meta{display:flex;gap:1.5rem;margin-top:1rem;flex-wrap:wrap}
+.hdr-badge{font-size:12px;color:#8b949e;background:#161b22;border:1px solid #30363d;padding:3px 10px;border-radius:20px}
+.hdr-badge a{color:#58a6ff;text-decoration:none}
+.hdr-badge a:hover{text-decoration:underline}
+.controls{display:flex;flex-direction:column;gap:12px;margin-bottom:1.5rem}
+.search-wrap{position:relative}
+.search-wrap input{width:100%;padding:10px 14px 10px 38px;font-size:14px;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#f0f6fc;outline:none}
+.search-wrap input:focus{border-color:#58a6ff}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#8b949e;font-size:14px}
+.fr{display:flex;flex-wrap:wrap;gap:6px}
+.fb{padding:4px 12px;font-size:12px;border:1px solid #30363d;border-radius:20px;background:#161b22;color:#8b949e;cursor:pointer;transition:all 0.15s}
+.fb:hover{background:#21262d;color:#c9d1d9;border-color:#8b949e}
+.fb.on{background:#1f6feb;border-color:#1f6feb;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:2rem}
+.stat{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:12px;text-align:center}
+.sn{font-size:24px;font-weight:600;color:#f0f6fc}
+.sl{font-size:11px;color:#8b949e;margin-top:2px;text-transform:uppercase;letter-spacing:0.05em}
+.sec{margin-bottom:2rem}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;user-select:none;padding:8px 0}
+.sh:hover .st{color:#f0f6fc}
+.scolor{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.st{font-size:12px;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:0.1em;transition:color 0.15s}
+.sc{font-size:11px;color:#8b949e;background:#21262d;padding:2px 8px;border-radius:10px}
+.chv{font-size:10px;color:#8b949e;transition:transform 0.2s;margin-left:auto}
+.chv.op{transform:rotate(90deg)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.card{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px;transition:border-color 0.15s}
+.card:hover{border-color:#30363d}
+.ct{display:flex;align-items:flex-start;gap:10px}
+.cdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.cn{font-size:13px;font-weight:600;color:#f0f6fc;line-height:1.4}
+.cn a{color:#f0f6fc;text-decoration:none}
+.cn a:hover{color:#58a6ff}
+.cu{font-size:11px;color:#8b949e;font-family:'SFMono-Regular',Consolas,monospace;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd{font-size:12px;color:#8b949e;line-height:1.6}
+.ctags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+.t-de{background:#0d419d;color:#79c0ff;border:1px solid #1158c7}
+.t-ti{background:#2d1f6e;color:#d2a8ff;border:1px solid #553098}
+.t-ma{background:#451b1b;color:#ffa198;border:1px solid #6e2b2b}
+.t-cl{background:#0a3622;color:#56d364;border:1px solid #196c2e}
+.t-k8{background:#1a2f1a;color:#3fb950;border:1px solid #2d5a27}
+.t-tf{background:#3d2b00;color:#e3b341;border:1px solid #6a4300}
+.t-tr{background:#3d1f2d;color:#f778ba;border:1px solid #6d3250}
+.t-tm{background:#282828;color:#adbac7;border:1px solid #444}
+.hidden{display:none}
+.div{height:1px;background:#21262d;margin:1.5rem 0}
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid #21262d;font-size:12px;color:#8b949e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+footer a{color:#58a6ff;text-decoration:none}
+footer a:hover{text-decoration:underline}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.hdr-meta{flex-direction:column;gap:0.5rem}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hdr">
+  <div class="hdr-title">Detection Engineering Resource Catalogue</div>
+  <div class="hdr-sub">A curated reference list for detection engineers, threat hunters, and threat intelligence practitioners. Covers frameworks, tooling, data sources, training, and research across endpoint, network, cloud, and container domains.</div>
+  <div class="hdr-meta">
+    <span class="hdr-badge">Part of <a href="https://github.com/riccithesecond/project-akogun">Project Akogun</a></span>
+    <span class="hdr-badge">Maintained by <a href="https://github.com/riccithesecond">@riccithesecond</a></span>
+    <span class="hdr-badge">Contributions welcome via GitHub</span>
+  </div>
+</div>
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">&#128269;</span>
+    <input id="srch" placeholder="Search by name, URL, or description..." oninput="fa()">
+  </div>
+  <div class="fr" id="frow"></div>
+</div>
+<div class="stats">
+  <div class="stat"><div class="sn" id="tc">0</div><div class="sl">Resources</div></div>
+  <div class="stat"><div class="sn" id="secc">0</div><div class="sl">Categories</div></div>
+  <div class="stat"><div class="sn" id="pc">0</div><div class="sl">Domains</div></div>
+  <div class="stat"><div class="sn" id="vc">0</div><div class="sl">Showing</div></div>
+</div>
+<div id="body"></div>
+<footer>
+  <span>Detection Engineering Resource Catalogue &nbsp;·&nbsp; <a href="https://github.com/riccithesecond/project-akogun">Project Akogun</a></span>
+  <span>Built by <a href="https://github.com/riccithesecond">@riccithesecond</a> &nbsp;·&nbsp; Suggestions welcome via GitHub Issues</span>
+</footer>
+</div>
+<script>
+const S=[
+{id:"frameworks",title:"Detection Frameworks & Methodology",color:"#388bfd",items:[
+  {n:"ADE Framework",u:"adeframework.org",d:"Adversarial Detection Engineering framework. A taxonomy of logic bugs in detection rules covering false negative classes, evasion patterns, and testing methodology for building robust detections.",t:["de"]},
+  {n:"MITRE ATT&CK",u:"attack.mitre.org",d:"The foundational adversary TTP knowledge base. Maps tactics and techniques across Windows, Linux, macOS, cloud, and mobile. Essential reference for all detection mapping work.",t:["de"]},
+  {n:"MITRE CAR",u:"car.mitre.org",d:"Cyber Analytics Repository. MITRE-developed detection analytics mapped to ATT&CK with pseudocode, data model fields, and implementation notes.",t:["de"]},
+  {n:"Palantir ADS Framework",u:"github.com/palantir/alerting-detection-strategy-framework",d:"Structured template for documenting detection rules: goal, categorisation, technical context, false positive guidance, and response actions.",t:["de"]},
+  {n:"Palantir WEF",u:"github.com/palantir/windows-event-forwarding",d:"Production Windows Event Forwarding configuration and curated Event ID reference from Palantir's security team.",t:["de"]},
+  {n:"OpenTide",u:"github.com/OpenTideHQ",d:"Reference architecture for a mature detection-as-code platform. Covers the full lifecycle from rule development to automated deployment and coverage tracking.",t:["de"]},
+  {n:"Summiting the Pyramid (CTID)",u:"github.com/center-for-threat-informed-defense/summiting-the-pyramid",d:"MITRE CTID project extending the Pyramid of Pain by scoring detection robustness against adversary evasion. Provides methodology for measuring detection quality.",t:["de"]},
+  {n:"TRAM (CTID)",u:"github.com/center-for-threat-informed-defense/tram",d:"Threat Report ATT&CK Mapper. Uses NLP to automatically extract and map ATT&CK techniques from threat intelligence reports.",t:["ti","de"]},
+  {n:"Attack Flow (CTID)",u:"github.com/center-for-threat-informed-defense/attack-flow",d:"MITRE CTID specification for representing multi-step attack sequences as connected ATT&CK technique flows. Enables detection documentation that captures attack chains.",t:["de"]},
+  {n:"infosecB Awesome Detection Engineering",u:"github.com/infosecB/awesome-detection-engineering",d:"Curated list of detection engineering resources: concepts, frameworks, detection content, logging guidance, and data sources.",t:["de"]},
+  {n:"st0pp3r Awesome Detection Engineer",u:"github.com/st0pp3r/awesome-detection-engineer",d:"Curated list of detection engineering tools, datasets, and resources with a practical tooling focus.",t:["de"]},
+  {n:"awesome-threat-detection (0x4D31)",u:"github.com/0x4D31/awesome-threat-detection",d:"Curated threat detection and hunting resources. Includes bundled PDFs: huntpedia, hunt-evil, and a Framework for Threat Hunting whitepaper.",t:["de"]},
+  {n:"Detection at Scale podcast",u:"detectionatscale.com",d:"Detection engineering podcast by Jack Naglieri featuring practitioners from Netflix, Datadog, and other large-scale security organisations. Deep conversations on detection architecture and programme design.",t:["de"]},
+  {n:"Anvilogic Armory",u:"github.com/anvilogic-forge/armory",d:"Community detection content library covering ATT&CK techniques in multiple SIEM formats. Useful additional rule corpus alongside SigmaHQ.",t:["de"]},
+  {n:"PEAK Threat Hunting Framework",u:"hunt.io/glossary/peak-threat-hunting-framework",d:"Programme maturity framework for threat hunting. Aligns hunt activities with business risk, measures progress, and builds repeatable scalable hunting processes.",t:["de"]},
+  {n:"Open Threat Hunting Framework (OTHF)",u:"github.com/TactiKoolSec/OTHF",d:"Community-driven, flexible hunting framework providing structured data collection and repeatable methodology. Encourages sharing techniques and staying ahead of attackers.",t:["de"]},
+  {n:"SANS Detection Engineering Poster",u:"sans.org/posters",d:"SANS reference poster covering the detection engineering lifecycle, data collection strategies, SIEM architecture, KQL cheatsheet, common SIEM detection techniques, AWS log sources, and Sigma rule format.",t:["de"]},
+]},
+{id:"sigma",title:"Sigma & Rule Development",color:"#3fb950",items:[
+  {n:"SigmaHQ rules",u:"github.com/SigmaHQ/sigma",d:"Canonical community Sigma rule repository. 3,700+ vendor-neutral detection rules mapped to ATT&CK across Windows, Linux, macOS, cloud, and network sources.",t:["de"]},
+  {n:"Phoenix — Sigma Intelligence",u:"sigma.nasbench.dev",d:"Web platform providing searchable, cross-referenced index of all SigmaHQ rules with ATT&CK matrix visualisation, field analytics, ART cross-referencing, and a live sigma-cli conversion studio.",t:["de"]},
+  {n:"sigma-cli",u:"github.com/SigmaHQ/sigma-cli",d:"Official CLI for converting Sigma rules to SIEM-specific query languages including KQL, SPL, EQL, and SQL. The core engine behind detection-as-code conversion pipelines.",t:["de"]},
+  {n:"pySigma",u:"github.com/SigmaHQ/pySigma",d:"Modern Python library for Sigma rule parsing and conversion. Supports custom backend development and pipeline transformations.",t:["de"]},
+  {n:"Sigma Correlations",u:"github.com/SigmaHQ/sigma/tree/master/correlations",d:"Multi-event correlation logic in the Sigma specification. Enables detection rules spanning multiple log events for detecting attack sequences.",t:["de"]},
+  {n:"Sigma2KQL",u:"github.com/socprime/Sigma2KQL",d:"Auto-updated weekly mirror of the entire SigmaHQ library converted to KQL. Useful validation reference when building KQL translation tooling.",t:["de"]},
+  {n:"TerraSigma",u:"github.com/socprime/TerraSigma",d:"All SigmaHQ rules converted to Sentinel Terraform scheduled analytics, updated weekly. Plug-and-play Sentinel detection deployment via Terraform.",t:["de","tf"]},
+  {n:"Uncoder.IO",u:"uncoder.io",d:"Browser-based SIEM rule converter supporting Sigma, KQL, SPL, EQL, and others. Useful for quick cross-platform rule translation and validation.",t:["de"]},
+  {n:"CAPA",u:"github.com/mandiant/capa",d:"Mandiant's open-source tool that automatically identifies ATT&CK-mapped capabilities in executable files. Bridges malware analysis and detection rule development.",t:["ma","de"]},
+  {n:"CAPA rules",u:"github.com/mandiant/capa-rules",d:"The YAML rule library powering CAPA. A reference for how Mandiant structures capability-based detection logic at the binary level.",t:["ma","de"]},
+  {n:"AttackRuleMap",u:"github.com/mdecrevoisier/SIGMA-detection-rules",d:"Maps open-source Sigma rules to Atomic Red Team test cases. Identifies which rules have validated atomic simulations and which gaps need new rules.",t:["de"]},
+]},
+{id:"coverage",title:"Coverage Measurement & Visualisation",color:"#3fb950",items:[
+  {n:"DeTT&CT",u:"github.com/rabobank-cdc/DeTTECT",d:"Maps data sources and detection coverage to ATT&CK, scores visibility, and generates ATT&CK Navigator layers for coverage heatmaps.",t:["de"]},
+  {n:"MITRE ATT&CK Navigator",u:"mitre-attack.github.io/attack-navigator",d:"Interactive ATT&CK matrix visualisation. Supports custom layers, scoring, and colouring. Standard tool for communicating detection coverage.",t:["de"]},
+  {n:"MITRE D3FEND",u:"d3fend.mitre.org",d:"MITRE's defensive countermeasure knowledge graph. Maps defensive techniques to the attacks they counter. Useful for tagging detections with their defensive mechanism.",t:["de"]},
+  {n:"MITRE Engage",u:"engage.mitre.org",d:"MITRE's adversary engagement and cyber deception framework. Covers honeytoken placement, denial, and deception techniques.",t:["de"]},
+]},
+{id:"lab",title:"Lab Data, Simulation & Validation",color:"#e3b341",items:[
+  {n:"Atomic Red Team",u:"github.com/redcanaryco/atomic-red-team/tree/master/atomics",d:"ATT&CK-mapped attack simulations. Each atomic test simulates exactly one technique, generating real telemetry for writing and validating detections.",t:["de"]},
+  {n:"Mordor / Security-Datasets",u:"github.com/OTRF/Security-Datasets",d:"Pre-recorded security event datasets from simulated ATT&CK techniques. Enables detection development and testing without a live attack environment.",t:["de"]},
+  {n:"EVTX Attack Samples",u:"github.com/sbousseaden/EVTX-ATTACK-SAMPLES",d:"ATT&CK-mapped Windows Event Log files from real and simulated attacks. Can be replayed through log pipelines for detection validation.",t:["de"]},
+  {n:"PCAP-ATTACK",u:"github.com/shramos/pcap-attack",d:"PCAP capture files for ATT&CK techniques. Replay through network analysis tools to generate network-layer telemetry for detection validation.",t:["de"]},
+  {n:"Loghub",u:"github.com/logpai/loghub",d:"Large collection of system log datasets from 30+ software systems. Useful as realistic background noise source when building or testing log pipelines.",t:["de"]},
+  {n:"Chainsaw",u:"github.com/WithSecureLabs/chainsaw",d:"Fast forensic EVTX analysis with Sigma rule support. Useful for rapid detection validation against attack sample EVTX files.",t:["de"]},
+  {n:"Hayabusa",u:"github.com/Yamato-Security/hayabusa",d:"Fast Windows event log analysis and Sigma execution tool. Produces ATT&CK-mapped timelines from EVTX files.",t:["de"]},
+  {n:"ThreatHunter-Playbook",u:"github.com/OTRF/ThreatHunter-Playbook",d:"Community-driven hunting notebook library with ATT&CK-mapped detection hypotheses, data requirements, and implementation examples.",t:["de"]},
+  {n:"Jupyter notebooks for security",u:"github.com/OTRF/notebooks-forge",d:"Jupyter environment pre-loaded with security datasets and threat hunting notebooks. Enables reproducible, publishable hunt workflows.",t:["de"]},
+  {n:"Network Flight Simulator",u:"github.com/alphasoc/flightsim",d:"Generates realistic malicious network traffic for testing network detection capabilities — DNS tunneling, beaconing, DGA domains, and more.",t:["de"]},
+  {n:"RITA",u:"github.com/activecountermeasures/rita",d:"Real Intelligence Threat Analytics. Analyses Zeek logs for long connections, beaconing, and DNS tunneling using statistical methods.",t:["de"]},
+  {n:"Stratus Red Team",u:"github.com/DataDog/stratus-red-team",d:"Datadog's cloud and Kubernetes attack simulation tool — Atomic Red Team for the cloud. Supports AWS, Azure, GCP, and Kubernetes with granular attack scenarios.",t:["cl","k8"]},
+]},
+{id:"telemetry",title:"Telemetry & Log Sources",color:"#8b949e",items:[
+  {n:"Sysmon Modular",u:"github.com/olafhartong/sysmon-modular",d:"Composable, community-maintained Sysmon configuration. Modular design allows selective telemetry collection by technique category.",t:["de"]},
+  {n:"Linux auditd ruleset (Neo23x0)",u:"github.com/Neo23x0/auditd",d:"Production-grade Linux auditd config from Florian Roth (Sigma creator). Generates the telemetry needed for Linux threat detection — the auditd equivalent of Sysmon.",t:["de"]},
+  {n:"JPCERT Tool Analysis",u:"jpcertcc.github.io/ToolAnalysisResultSheet",d:"Windows Event Log entries generated by 49 specific attacker tools. Field-level telemetry reference for understanding what each tool leaves behind.",t:["de"]},
+  {n:"Zeek documentation",u:"docs.zeek.org",d:"Main documentation for the Zeek network analysis framework. Covers scripting language, log format, and available protocols.",t:["de"]},
+  {n:"Zeek Intel Framework",u:"docs.zeek.org/en/master/frameworks/intel.html",d:"Zeek's built-in threat intelligence integration. Enables IOC feeds to be applied directly to live network traffic for real-time indicator matching.",t:["de","ti"]},
+  {n:"ASIM Schema Browser",u:"oshezaf.github.io/sentinelninja/asim-browser.html",d:"Interactive browser of Microsoft's Advanced Security Information Model — all 12 schemas, 2,139 fields, and 165 parsers. Built by the ASIM architect.",t:["de"]},
+  {n:"ASIM Schema Docs",u:"learn.microsoft.com/en-us/azure/sentinel/normalization-schema-process-event",d:"Official Microsoft ASIM normalization schema documentation. Canonical field reference for ASIM-compatible log normalisation.",t:["de"]},
+  {n:"OCSF",u:"schema.ocsf.io",d:"Open Cybersecurity Schema Framework. AWS-led open schema standard backed by Splunk, CrowdStrike, IBM, and others. Used by AWS Security Lake.",t:["de","cl"]},
+]},
+{id:"kql",title:"KQL & Sentinel Reference",color:"#388bfd",items:[
+  {n:"KQL documentation",u:"learn.microsoft.com/en-us/azure/data-explorer/kql-quick-reference",d:"Official Kusto Query Language reference. Covers all operators, functions, and query patterns for KQL against Azure Data Explorer and Microsoft Sentinel.",t:["de"]},
+  {n:"Microsoft Azure-Sentinel GitHub",u:"github.com/Azure/Azure-Sentinel",d:"Official Sentinel content repo. Production analytics rules, hunting queries, workbooks, and playbooks — all in KQL against ASIM schema.",t:["de"]},
+  {n:"KQL Advanced Hunting Queries",u:"github.com/Bert-JanP/Hunting-Queries-Detection-Rules",d:"Community KQL detection queries for Defender for Endpoint, Defender for Identity, and Defender for Cloud Apps.",t:["de"]},
+  {n:"Microsoft Sentinel Ninja (Level 400)",u:"techcommunity.microsoft.com/blog/microsoftsentinelblog/become-a-microsoft-sentinel-ninja-the-complete-level-400-training/1246310",d:"Microsoft's free structured Sentinel training path. Covers analytics rules, hunting, workbooks, SOAR automation, and advanced KQL.",t:["de"]},
+  {n:"Security Blog Search",u:"securityblogsearch.com",d:"Community aggregator of Microsoft security blog content. Sentinel tab surfaces community-published KQL detection rules and hunting queries in near real-time.",t:["de"]},
+]},
+{id:"lol",title:"Living Off the Land References",color:"#d2a8ff",items:[
+  {n:"LOLBAS",u:"lolbas-project.github.io",d:"Living Off the Land Binaries and Scripts for Windows. Documents every binary, script, and library that can be abused for execution, persistence, or evasion.",t:["de"]},
+  {n:"GTFOBins",u:"gtfobins.org",d:"Linux equivalent of LOLBAS. Documents Unix binaries that can be abused to bypass security restrictions or escalate privileges.",t:["de"]},
+  {n:"LolDrivers",u:"loldrivers.io",d:"Vulnerable and malicious Windows drivers. Reference for Bring Your Own Vulnerable Driver detection — an increasingly common EDR bypass technique.",t:["de"]},
+  {n:"LOLOL Farm",u:"lolol.farm",d:"Meta-aggregator of all Living Off the Land projects across platforms, tools, and techniques.",t:["de"]},
+  {n:"LOLC2",u:"lolc2.github.io",d:"Documents C2 frameworks that abuse legitimate cloud services for command-and-control communication. Useful for network-layer detections targeting C2 over trusted infrastructure.",t:["de"]},
+]},
+{id:"cloud",title:"Cloud Security Detection",color:"#388bfd",items:[
+  {n:"Hacking The Cloud",u:"hackingthe.cloud",d:"Comprehensive offensive TTP reference for AWS, Azure, and GCP. Documents attack techniques with the specific API calls involved — directly translatable to detection rules.",t:["cl"]},
+  {n:"Datadog Cloud Security Atlas",u:"securitylabs.datadoghq.com/cloud-security-atlas",d:"Datadog Security Labs' risk register for cloud attack techniques and misconfigurations across AWS, Azure, and GCP with exploitability and impact scoring.",t:["cl"]},
+  {n:"Wiz Cloud Threat Landscape",u:"threats.wiz.io",d:"Wiz Research's threat intelligence database of cloud security incidents, threat actors, tools, and observed techniques. Complements the Datadog Atlas — Atlas for the technique, Wiz for the actor.",t:["cl","ti"]},
+  {n:"pathfinding.cloud",u:"pathfinding.cloud/paths",d:"Datadog Security Labs' interactive reference of AWS IAM privilege escalation paths. Shows required permissions and which detection tools already cover each path.",t:["cl"]},
+  {n:"CloudGoat",u:"github.com/RhinoSecurityLabs/cloudgoat",d:"Intentionally vulnerable AWS environment from Rhino Security Labs. Realistic attack scenarios against misconfigured AWS infrastructure for cloud detection development.",t:["cl"]},
+  {n:"CloudSecDocs",u:"cloudsecdocs.com",d:"Curated notes on AWS, GCP, and Azure security. Well-organised reference covering cloud-native security patterns, container security, and cloud attack surface.",t:["cl"]},
+  {n:"Google Cloud Security Analytics",u:"github.com/GoogleCloudPlatform/security-analytics",d:"Community-driven GCP security analytics and detection queries for Cloud Audit Logs. Official Google Cloud reference for threat detection in GCP environments.",t:["cl"]},
+  {n:"AWSDoor + Wavestone blog",u:"github.com/OtterHacker/AWSDoor",d:"Novel AWS persistence technique and accompanying Wavestone research. Demonstrates an IAM-based persistence path not covered in most existing detection references.",t:["cl"]},
+  {n:"Datadog Security Labs articles",u:"securitylabs.datadoghq.com/articles",d:"Research blog from the team behind Stratus Red Team, pathfinding.cloud, and the Cloud Security Atlas. Publishes cloud attack research with full detection guidance.",t:["cl","tr"]},
+  {n:"purpleshellsecurity adversary-lab-aws",u:"github.com/purpleshellsecurity/adversary-lab-aws",d:"Modular Terraform AWS detection lab with Stratus Red Team pre-installed. Provisions a realistic attack environment for approximately $9-15 per month.",t:["cl","tf"]},
+  {n:"awesome-kubernetes-threat-detection",u:"github.com/jatrost/awesome-kubernetes-threat-detection",d:"Curated Kubernetes threat detection resources: Sigma cloud rules, Falco rules, Tracee signatures, attack simulation tools, and reference material.",t:["k8"]},
+  {n:"awesome-detection-rules (jatrost)",u:"github.com/jatrost/awesome-detection-rules",d:"Index of detection rule libraries across Sigma, Falco, Zeek, Snort, YARA, and Splunk.",t:["de"]},
+]},
+{id:"containers",title:"Container & Kubernetes Security",color:"#3fb950",items:[
+  {n:"Falco",u:"falco.org",d:"CNCF runtime security tool for containers and Kubernetes. Detects anomalous syscall behaviour, privilege escalations, and container escapes in real time using eBPF.",t:["k8"]},
+  {n:"Tracee",u:"github.com/aquasecurity/tracee",d:"Aqua Security's eBPF-based runtime security tool for Linux and containers. Generates ATT&CK-mapped security events from kernel-level syscall monitoring.",t:["k8"]},
+  {n:"Trivy",u:"github.com/aquasecurity/trivy",d:"Aqua Security's scanner for container image vulnerabilities, Terraform IaC misconfigurations, secrets, and SBOMs. Covers pre-deploy and post-deploy scanning.",t:["k8","tf"]},
+  {n:"BadPods",u:"github.com/BishopFox/badpods",d:"Kubernetes pod manifests abusing different privilege settings to demonstrate container escape and privilege escalation paths. Each scenario generates specific audit log events.",t:["k8"]},
+  {n:"Kubernetes Goat",u:"github.com/madhuakula/kubernetes-goat",d:"Intentionally vulnerable Kubernetes environment with documented attack scenarios. The K8s equivalent of CloudGoat.",t:["k8"]},
+  {n:"OWASP Docker Security Cheat Sheet",u:"cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html",d:"Concise Docker hardening reference from OWASP covering image security, runtime controls, and network isolation.",t:["k8"]},
+]},
+{id:"terraform",title:"Terraform & Infrastructure as Code",color:"#e3b341",items:[
+  {n:"Terraform documentation",u:"developer.hashicorp.com/terraform",d:"Official HashiCorp Terraform documentation. Covers language, providers, modules, and state management for building cloud detection labs as reproducible code.",t:["tf"]},
+  {n:"Terraform AWS provider docs",u:"registry.terraform.io/providers/hashicorp/aws/latest/docs",d:"Complete reference for every AWS resource available via the Terraform AWS provider.",t:["tf","cl"]},
+  {n:"CloudSploit",u:"github.com/aquasecurity/cloudsploit",d:"Aqua Security's cloud security configuration scanner. Identifies misconfigurations in live AWS, Azure, and GCP environments. Complements Trivy's pre-deploy IaC scanning.",t:["tf","cl"]},
+]},
+{id:"threat-model",title:"Threat Modelling",color:"#8b949e",items:[
+  {n:"OWASP Threat Dragon",u:"owasp.org/www-project-threat-dragon",d:"Free open-source threat modelling tool. Produces annotated data flow diagrams with identified threats and mitigations.",t:["de"]},
+  {n:"Threagile",u:"github.com/Threagile/threagile",d:"Threat modelling as code. Define architecture in YAML and automatically generate a risk-annotated threat model. Fits naturally into detection-as-code workflows.",t:["de"]},
+  {n:"STRIDE / Microsoft Threat Modeling Tool",u:"microsoft.com/en-us/securityengineering/sdl/threatmodeling",d:"Microsoft's STRIDE methodology and free threat modelling tool from the Security Development Lifecycle. The most widely used structured threat modelling approach in enterprise.",t:["de"]},
+  {n:"IriusRisk Community",u:"iriusrisk.com/community-edition",d:"Free community edition of IriusRisk's threat modelling platform. Supports STRIDE and PASTA with a polished interface suitable for shareable portfolio artefacts.",t:["de"]},
+]},
+{id:"malware",title:"Malware Analysis & Reverse Engineering",color:"#ffa198",items:[
+  {n:"FLARE Learning Hub",u:"github.com/mandiant/flare-learning-hub",d:"Free malware analysis and reverse engineering training from Mandiant's FLARE team. Covers static analysis, dynamic analysis, memory forensics, and the full FLARE toolset.",t:["ma"]},
+  {n:"FLARE-VM",u:"github.com/mandiant/flare-vm",d:"Automated installer for a Windows-based malware analysis environment. Sets up all FLARE tooling in an isolated VirtualBox VM.",t:["ma"]},
+  {n:"any.run",u:"any.run",d:"Interactive malware sandbox with live execution. Observe behaviour, extract IOCs, and map TTPs in real time.",t:["ma"]},
+  {n:"Joe Sandbox",u:"joesandbox.com",d:"Deep automated malware analysis sandbox with full memory analysis, API call tracing, network traffic capture, and ATT&CK technique mapping.",t:["ma"]},
+  {n:"Hybrid Analysis",u:"hybrid-analysis.com",d:"Free automated sandbox from CrowdStrike. Fast initial triage for rapid behavioural assessment.",t:["ma"]},
+  {n:"MalwareBazaar",u:"bazaar.abuse.ch",d:"Free malware sample repository from abuse.ch. Community-submitted samples with metadata, tags, and YARA hits.",t:["ma"]},
+  {n:"vx-underground",u:"vx-underground.org",d:"The largest public collection of malware source code, samples, and research papers. Always handle samples in an isolated environment.",t:["ma"]},
+  {n:"Malware Unicorn workshops",u:"malwareunicorn.org/#/workshops",d:"Free structured malware analysis and RE workshops. Covers Windows internals, PE format, static analysis, and x86 assembly basics.",t:["ma"]},
+  {n:"Open Source Malware",u:"opensourcemalware.com",d:"Community database tracking malicious open source packages, GitHub repos, AI skills, and VS Code extensions with IOCs and threat actor attribution.",t:["ma","ti"]},
+  {n:"awesome-malware-analysis (rshipp)",u:"github.com/rshipp/awesome-malware-analysis",d:"Comprehensive curated list of malware analysis tools, resources, and references covering every phase of the analysis workflow.",t:["ma"]},
+]},
+{id:"threat-intel",title:"Threat Intelligence",color:"#d2a8ff",items:[
+  {n:"OpenCTI",u:"docs.opencti.io",d:"Open-source cyber threat intelligence platform. Structures and stores intelligence as a STIX2 knowledge graph with connectors to abuse.ch, MISP, VirusTotal, AlienVault OTX, and more.",t:["ti"]},
+  {n:"abuse.ch",u:"abuse.ch",d:"Suite of free feeds: ThreatFox (C2 indicators), URLhaus (malware distribution URLs), MalwareBazaar (samples), and Feodo Tracker (botnet infrastructure). STIX/TAXII compatible.",t:["ti"]},
+  {n:"ThreatFox",u:"threatfox.abuse.ch",d:"C2 indicator database from abuse.ch. Tracks IP:port combinations for Cobalt Strike, Emotet, QakBot, and others. Free API.",t:["ti"]},
+  {n:"VirusTotal",u:"virustotal.com",d:"Multi-engine file, URL, domain, and IP analysis platform. Aggregates 70+ AV engines plus behavioural sandbox results.",t:["ti","ma"]},
+  {n:"Shodan",u:"shodan.io",d:"Search engine for internet-connected devices. Identifies what services are running on any IP — useful for infrastructure analysis and C2 identification during threat investigations.",t:["ti"]},
+  {n:"Censys",u:"censys.io",d:"Internet-wide infrastructure scanning with strong TLS certificate tracking. Enables adversary infrastructure pivoting by tracing certificate reuse across C2 servers.",t:["ti"]},
+  {n:"Hunt.io",u:"hunt.io",d:"Real-time C2 infrastructure tracking and IOC enrichment platform. Fingerprints and tracks live C2 servers by analysing banners, certificates, and hosting patterns.",t:["ti"]},
+  {n:"Intel Owl",u:"github.com/intelowlproject/IntelOwl",d:"OSINT orchestration platform. A single API call triggers enrichment across VirusTotal, Shodan, GreyNoise, AbuseIPDB, and dozens of other sources simultaneously. Self-hosted via Docker.",t:["ti"]},
+  {n:"OSINT Framework",u:"osintframework.com",d:"Interactive visual map of every OSINT data source categorised by indicator type. Starting point when you have an unknown IOC and need to know which tools can enrich it.",t:["ti"]},
+  {n:"GreyNoise",u:"greynoise.io",d:"Classifies internet-wide background noise versus targeted attacker activity. Free community API. Reduces alert fatigue by identifying whether an IP is a mass scanner or targeted.",t:["ti"]},
+  {n:"AlienVault OTX",u:"otx.alienvault.com",d:"Open Threat Exchange. Community-driven threat intelligence with IOC pulses covering malware families and threat actors. STIX/TAXII compatible with OpenCTI connector.",t:["ti"]},
+  {n:"Cisco Talos",u:"talosintelligence.com",d:"Free IP, domain, and hash reputation lookup. Talos blog publishes detailed malware family analyses and adversary TTP research.",t:["ti","tr"]},
+  {n:"ExtSentry",u:"extsentry.github.io",d:"Tracks browser extension IOC feeds in multiple formats. Useful for monitoring malicious extension activity and supply chain threats.",t:["ti"]},
+  {n:"VSXSentry",u:"vsxsentry.github.io",d:"Threat intelligence feeds focused on malicious VS Code extensions. Relevant as supply chain attacks increasingly target developer environments.",t:["ti"]},
+  {n:"SANS Intelligence Analyst's Playbook",u:"sans.org/posters",d:"SANS reference poster covering the Intelligence Cycle, calibrated probability language, Admiralty source evaluation, Analysis of Competing Hypotheses (ACH), STEEP+S scanning, and cognitive bias framework.",t:["ti","tr"]},
+  {n:"IFIN",u:"ifin-intel.org",d:"Federated cyber threat intelligence sharing network. Provides structured STIX/TAXII feeds for integration into threat intelligence platforms.",t:["ti"]},
+  {n:"Have I Been Pwned",u:"haveibeenpwned.com",d:"Breach credential lookup. Useful for IOC enrichment and identity threat context.",t:["ti"]},
+]},
+{id:"threat-research",title:"Threat Research",color:"#f778ba",items:[
+  {n:"The DFIR Report",u:"thedfirreport.com",d:"The most detailed publicly available malware incident reports. Full intrusion coverage from initial access to exfiltration with process trees, network IOCs, and detection opportunities.",t:["tr","de"]},
+  {n:"Unit 42 (Palo Alto Networks)",u:"unit42.paloaltonetworks.com",d:"Palo Alto Networks' threat research team. Nation-state actor profiles, malware family analyses, and cloud attack research with IOCs and detection recommendations.",t:["tr"]},
+  {n:"Elastic Security Labs",u:"elastic.co/security-labs",d:"Platform-agnostic malware analysis, threat research, and detection engineering content with YARA rules and detection logic.",t:["tr","ma"]},
+  {n:"SpecterOps Posts",u:"posts.specterops.io",d:"Deep technical Active Directory and Windows attack research from SpecterOps — the team behind BloodHound. Essential reference for writing detections against AD-targeting techniques.",t:["tr","de"]},
+  {n:"FalconForce blog",u:"falconforce.nl/blogs",d:"High-quality detection engineering research. Publishes specific Sigma rules with full TTP analysis, data source requirements, and false positive guidance.",t:["tr","de"]},
+  {n:"Mandiant research blog",u:"mandiant.com/resources/blog",d:"Nation-state actor TTPs, malware family deep dives, and incident response findings. One of the richest public sources of real-world adversary behaviour.",t:["tr"]},
+  {n:"The Record by Recorded Future",u:"therecord.media",d:"High-quality threat intelligence news covering nation-state activity, ransomware group tracking, and vulnerability exploitation.",t:["tr"]},
+  {n:"Wiz Research",u:"wiz.io/research",d:"Cloud-focused security research from Wiz. Publishes novel cloud attack techniques and maintains the Cloud Threat Landscape intelligence database.",t:["tr","cl"]},
+  {n:"tl;dr sec",u:"tldrsec.com",d:"Weekly curated security newsletter for 90,000+ practitioners. Archive is fully searchable by topic.",t:["tr"]},
+]},
+{id:"adversary",title:"Adversary Technique Reference",color:"#ffa198",items:[
+  {n:"ired.team",u:"ired.team",d:"Publicly available red teaming notes covering code execution, injection, defense evasion, lateral movement, and persistence. Documents attacker implementation details and artefacts produced.",t:["tr","de"]},
+  {n:"HackTricks",u:"hacktricks.wiki",d:"Comprehensive offensive technique wiki covering Windows, Linux, cloud, Active Directory, and web. Referenced by both red and blue teams for technique implementation details.",t:["tr","de"]},
+]},
+{id:"dfir",title:"DFIR & Incident Response",color:"#f778ba",items:[
+  {n:"awesome-incident-response (meirwah)",u:"github.com/meirwah/awesome-incident-response",d:"Curated IR tools list covering memory forensics, disk forensics, log analysis, and malware analysis.",t:["tr"]},
+  {n:"msticpy",u:"github.com/microsoft/msticpy",d:"Microsoft's Python library for threat investigation and hunting in Jupyter Notebooks. Covers IOC enrichment, Sentinel queries, and investigation visualisation.",t:["de","tr"]},
+  {n:"SANS Windows Forensic Analysis Playbook",u:"sans.org/posters",d:"SANS reference covering six critical Windows artifacts: Jump Lists, LNK Files, RecentDocs/OpenSave MRU, Prefetch, SRUM, and Windows Event Logs — with storage locations, parsing tools, and forensic commands.",t:["tr","de"]},
+]},
+{id:"training",title:"Training & Skills Development",color:"#388bfd",items:[
+  {n:"Taggart Institute",u:"taggartinstitute.org",d:"Free detection engineering and security training. Courses include Automated Detection with Sigma, Python for Defenders, and The Homelab Almanac.",t:["de"]},
+  {n:"Antisyphon Training",u:"antisyphontraining.com",d:"Pay What You Can cybersecurity training starting at $0. Courses cover SOC, blue team, red team, threat hunting, and forensics. John Strand and other industry practitioners.",t:["de"]},
+  {n:"ConDef Lite (Just Hacking Training)",u:"learn.justhacking.com/catalog",d:"DIY home lab version of the Constructing Defense path. 100+ videos covering attacking and defending a full enterprise including multi-cloud, with automated setup scripts.",t:["de"]},
+  {n:"AI Cyber Defense Ops (Just Hacking Training)",u:"justhacking.com/course/ai-cyber-defense-ops",d:"Claude-based blue team automation course. Covers using AI to build entirely new defensive workflows for SOC, IR, and threat investigation tasks.",t:["de"]},
+  {n:"TCM Security Academy",u:"tcm-security-academy.teachable.com/l/dashboard",d:"Practical security courses including Detection Engineering for Beginners — detection lifecycle, Python API integration, and GitHub Actions DaC pipelines.",t:["de"]},
+  {n:"Network Defense (Chris Sanders)",u:"networkdefense.co/courses",d:"Applied network security and threat hunting courses. Covers network analysis, hunting methodology, and PCAP-based investigation techniques.",t:["de"]},
+  {n:"Microsoft Sentinel Ninja (Level 400)",u:"techcommunity.microsoft.com/blog/microsoftsentinelblog/become-a-microsoft-sentinel-ninja-the-complete-level-400-training/1246310",d:"Microsoft's free structured Sentinel training path covering analytics rules, hunting, workbooks, SOAR automation, and advanced KQL.",t:["de"]},
+  {n:"Microsoft Learn Security Engineer path",u:"learn.microsoft.com/en-us/training/career-paths/security-engineer",d:"Microsoft's structured learning path covering Azure Security, Sentinel, Defender, and KQL.",t:["de"]},
+  {n:"AWS Skill Builder",u:"skillbuilder.aws",d:"Official AWS training platform covering cloud security, CloudTrail, GuardDuty, Security Hub, and cloud-native detection patterns.",t:["cl"]},
+  {n:"Google Skills",u:"skills.google",d:"Google's free training platform covering GCP, cloud security fundamentals, and professional certifications.",t:["cl"]},
+  {n:"KodeKloud",u:"kodekloud.com",d:"Hands-on Kubernetes, Docker, and DevOps labs. Practical environment for learning container orchestration and cloud-native security.",t:["k8"]},
+  {n:"PortSwigger Web Security Academy",u:"portswigger.net",d:"Free web security training from the Burp Suite team. Covers OWASP Top 10 and advanced web attack techniques.",t:["de"]},
+  {n:"Google Technical Writing",u:"developers.google.com/tech-writing",d:"Free technical writing courses. Covers clarity, precision, and documentation structure — directly applicable to writing detection writeups and research.",t:["de"]},
+  {n:"Malware Unicorn workshops",u:"malwareunicorn.org/#/workshops",d:"Free malware analysis and RE workshops. Also listed under Malware Analysis.",t:["ma"]},
+  {n:"Gale / Udemy",u:"gale.udemy.com/organization/home",d:"Udemy course access via library or employer programs. Many public libraries provide free access.",t:["de"]},
+  {n:"FLARE Learning Hub",u:"github.com/mandiant/flare-learning-hub",d:"Free Mandiant RE and malware analysis training. Also listed under Malware Analysis.",t:["ma"]},
+]},
+{id:"utilities",title:"Practical Utilities",color:"#8b949e",items:[
+  {n:"explainshell.com",u:"explainshell.com",d:"Parses any shell command and explains every flag and argument visually.",t:["de"]},
+  {n:"tldr.sh",u:"tldr.sh",d:"Community-maintained simplified man pages. Most common use cases for any command in a few lines.",t:["de"]},
+  {n:"ss64.com",u:"ss64.com",d:"Command-line reference for Windows CMD, PowerShell, Linux, and macOS. Especially strong for Windows and PowerShell.",t:["de"]},
+  {n:"shellcheck.net",u:"shellcheck.net",d:"Lints and explains shell script errors. Annotates every issue with explanation and fix.",t:["de"]},
+  {n:"crontab.guru",u:"crontab.guru",d:"Interactive cron expression validator and explainer.",t:["de"]},
+  {n:"regex101.com",u:"regex101.com",d:"Live regex testing and explanation tool. Useful for building Sigma rule field matching patterns.",t:["de"]},
+  {n:"man7.org/linux/man-pages",u:"man7.org/linux/man-pages",d:"Official Linux man pages available online.",t:["de"]},
+  {n:"detections.ai",u:"detections.ai/landing",d:"Community platform for sharing, discovering, and AI-assisted creation of detection rules across Sigma, KQL, and SPL.",t:["de"]},
+]},
+{id:"meta",title:"Meta-Lists & Discovery",color:"#8b949e",items:[
+  {n:"sindresorhus/awesome",u:"github.com/sindresorhus/awesome",d:"Root index of all awesome lists. Security section is the fastest path to finding curated resources in any security domain.",t:["de"]},
+  {n:"sbilly/awesome-security",u:"github.com/sbilly/awesome-security",d:"Broad general security curated list covering offensive, defensive, and operational security tooling.",t:["de"]},
+  {n:"fabacab/awesome-cybersecurity-blueteam",u:"github.com/fabacab/awesome-cybersecurity-blueteam",d:"Blue team-focused curated list covering EDR, NSM, SIEM, threat hunting, SOAR, and cloud security.",t:["de"]},
+]}
+];
+
+const CATS={"all":"All","de":"Detection Engineering","ti":"Threat Intelligence","tr":"Threat Research","ma":"Malware Analysis","cl":"Cloud Security","k8":"Kubernetes / Containers","tf":"Terraform / IaC"};
+const TC={"de":"t-de","ti":"t-ti","ma":"t-ma","cl":"t-cl","k8":"t-k8","tf":"t-tf","tr":"t-tr","tm":"t-tm"};
+const TL={"de":"Detection Eng","ti":"Threat Intel","tr":"Threat Research","ma":"Malware Analysis","cl":"Cloud Security","k8":"Kubernetes","tf":"Terraform / IaC","tm":"Threat Modelling"};
+let af="all";
+let os=new Set(S.map(s=>s.id));
+
+function bFilters(){
+  document.getElementById("frow").innerHTML=Object.entries(CATS).map(([k,v])=>
+    `<button class="fb ${k==="all"?"on":""}" onclick="sf('${k}')">${v}</button>`
+  ).join("");
+}
+
+function sf(f){
+  af=f;
+  document.querySelectorAll(".fb").forEach(b=>b.classList.toggle("on",b.textContent===CATS[f]));
+  fa();
+}
+
+function fa(){
+  const q=document.getElementById("srch").value.toLowerCase();
+  let v=0;
+  S.forEach(sec=>{
+    const se=document.getElementById("s-"+sec.id);
+    if(!se)return;
+    let sv=0;
+    sec.items.forEach((item,i)=>{
+      const c=document.getElementById("c-"+sec.id+"-"+i);
+      if(!c)return;
+      const mf=af==="all"||item.t.includes(af);
+      const ms=!q||item.n.toLowerCase().includes(q)||item.d.toLowerCase().includes(q)||item.u.toLowerCase().includes(q);
+      if(mf&&ms){c.classList.remove("hidden");sv++;v++;}
+      else c.classList.add("hidden");
+    });
+    se.classList.toggle("hidden",sv===0);
+    const ct=se.querySelector(".sc");
+    if(ct)ct.textContent=sv;
+  });
+  document.getElementById("vc").textContent=v;
+}
+
+function tog(id){
+  const cards=document.getElementById("cards-"+id);
+  const chv=document.getElementById("chv-"+id);
+  if(os.has(id)){os.delete(id);cards.style.display="none";chv.classList.remove("op");}
+  else{os.add(id);cards.style.display="grid";chv.classList.add("op");}
+}
+
+function build(){
+  bFilters();
+  let tot=0;
+  const doms=new Set();
+  document.getElementById("body").innerHTML=S.map((sec,si)=>{
+    tot+=sec.items.length;
+    sec.items.forEach(item=>item.t.forEach(t=>doms.add(t)));
+    const cards=sec.items.map((item,i)=>{
+      const tags=item.t.map(t=>`<span class="tag ${TC[t]||'t-de'}">${TL[t]||t}</span>`).join("");
+      return `<div class="card" id="c-${sec.id}-${i}">
+        <div class="ct"><div class="cdot" style="background:${sec.color}"></div>
+        <div style="flex:1;min-width:0">
+          <div class="cn"><a href="https://${item.u}" target="_blank" rel="noopener">${item.n}</a></div>
+          <div class="cu">${item.u}</div>
+        </div></div>
+        <div class="cd">${item.d}</div>
+        <div class="ctags">${tags}</div>
+      </div>`;
+    }).join("");
+    return `${si>0?'<div class="div"></div>':''}
+    <div class="sec" id="s-${sec.id}">
+      <div class="sh" onclick="tog('${sec.id}')">
+        <div class="scolor" style="background:${sec.color}"></div>
+        <span class="st">${sec.title}</span>
+        <span class="sc">${sec.items.length}</span>
+        <span class="chv op" id="chv-${sec.id}">&#9654;</span>
+      </div>
+      <div class="cards" id="cards-${sec.id}">${cards}</div>
+    </div>`;
+  }).join("");
+  document.getElementById("tc").textContent=tot;
+  document.getElementById("secc").textContent=S.length;
+  document.getElementById("pc").textContent=doms.size;
+  document.getElementById("vc").textContent=tot;
+}
+build();
+</script>
+</body>
+</html>
