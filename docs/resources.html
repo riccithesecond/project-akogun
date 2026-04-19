@@ -115,6 +115,8 @@ const S=[
   {n:"detections.xyz",u:"detections.xyz",d:"Detection engineering blog by Daniel Koifman covering detection methodology, immutable artifacts framework, and adversarial thinking. Focuses on the philosophy and craft of detection design rather than tooling.",t:["de"]},
   {n:"Open Threat Hunting Framework (OTHF)",u:"github.com/TactiKoolSec/OTHF",d:"Community-driven, flexible hunting framework providing structured data collection and repeatable methodology. Encourages sharing techniques and staying ahead of attackers.",t:["de"]},
   {n:"SANS Detection Engineering Poster",u:"sans.org/posters",d:"SANS reference poster covering the detection engineering lifecycle, data collection strategies, SIEM architecture, KQL cheatsheet, common SIEM detection techniques, AWS log sources, and Sigma rule format.",t:["de"]},
+  {n:"Detect FYI",u:"detect.fyi",d:"Community detection engineering publication featuring long-form practitioner articles on detection pipelines, maturity models, KQL, and DFIR techniques. Home to contributions from Daniel Koifman and other working detection engineers.",t:["de"]},
+  {n:"Detection Engineering Weekly",u:"detectionengineering.net",d:"Zack Allen's weekly Substack covering detection engineering news, tools, and techniques. 15,000+ subscribers. Essential reading given Allen's background leading detection at Netflix.",t:["de"]},
 ]},
 {id:"sigma",title:"Sigma & Rule Development",color:"#3fb950",items:[
   {n:"SigmaHQ rules",u:"github.com/SigmaHQ/sigma",d:"Canonical community Sigma rule repository. 3,700+ vendor-neutral detection rules mapped to ATT&CK across Windows, Linux, macOS, cloud, and network sources.",t:["de"]},
@@ -158,6 +160,7 @@ const S=[
   {n:"ASIM Schema Browser",u:"oshezaf.github.io/sentinelninja/asim-browser.html",d:"Interactive browser of Microsoft's Advanced Security Information Model — all 12 schemas, 2,139 fields, and 165 parsers. Built by the ASIM architect.",t:["de"]},
   {n:"ASIM Schema Docs",u:"learn.microsoft.com/en-us/azure/sentinel/normalization-schema-process-event",d:"Official Microsoft ASIM normalization schema documentation. Canonical field reference for ASIM-compatible log normalisation.",t:["de"]},
   {n:"OCSF",u:"schema.ocsf.io",d:"Open Cybersecurity Schema Framework. AWS-led open schema standard backed by Splunk, CrowdStrike, IBM, and others. Used by AWS Security Lake.",t:["de","cl"]},
+  {n:"Windows Auditing Baseline (mdecrevoisier)",u:"github.com/mdecrevoisier/Windows-auditing-baseline",d:"Complete end-to-end Windows auditing toolset for Active Directory environments. Covers every auditing subcategory mapped 1-to-1 to MITRE ATT&CK TTPs, pre-configured GPO templates ready for import, disabled event logs worth enabling, and log sizing guidance. Phase 1 essential — use alongside Sysmon Modular and Palantir WEF.",t:["de"]},
 ]},
 {id:"kql",title:"KQL & Sentinel Reference",color:"#388bfd",items:[
   {n:"KQL documentation",u:"learn.microsoft.com/en-us/azure/data-explorer/kql-quick-reference",d:"Official Kusto Query Language reference. Covers all operators, functions, and query patterns for KQL against Azure Data Explorer and Microsoft Sentinel.",t:["de"]},
@@ -165,6 +168,7 @@ const S=[
   {n:"KQL Advanced Hunting Queries",u:"github.com/Bert-JanP/Hunting-Queries-Detection-Rules",d:"Community KQL detection queries for Defender for Endpoint, Defender for Identity, and Defender for Cloud Apps.",t:["de"]},
   {n:"Microsoft Sentinel Ninja (Level 400)",u:"techcommunity.microsoft.com/blog/microsoftsentinelblog/become-a-microsoft-sentinel-ninja-the-complete-level-400-training/1246310",d:"Microsoft's free structured Sentinel training path. Covers analytics rules, hunting, workbooks, SOAR automation, and advanced KQL.",t:["de"]},
   {n:"Security Blog Search",u:"securityblogsearch.com",d:"Community aggregator of Microsoft security blog content. Sentinel tab surfaces community-published KQL detection rules and hunting queries in near real-time.",t:["de"]},
+  {n:"Blu Raven Academy blog",u:"academy.bluraven.io/blog",d:"KQL-focused detection engineering blog covering advanced query techniques, Cobalt Strike beacon detection, and living-off-the-land RMM tool detection with a single KQL rule.",t:["de"]},
 ]},
 {id:"lol",title:"Living Off the Land References",color:"#d2a8ff",items:[
   {n:"LOLBAS",u:"lolbas-project.github.io",d:"Living Off the Land Binaries and Scripts for Windows. Documents every binary, script, and library that can be abused for execution, persistence, or evasion.",t:["de"]},
@@ -185,6 +189,9 @@ const S=[
   {n:"OFFENSAI blog",u:"offensai.com/blog",d:"Original research on AWS security, IAM exploitation, and autonomous cloud security testing. Covers novel attack techniques including OIDC-based persistence, IAM eventual consistency exploitation, and S3 ransomware via ABAC tag abuse — with detection implications for each.",t:["cl"]},
   {n:"AWS Security Digest",u:"awssecuritydigest.com",d:"Weekly newsletter covering all AWS security news, research, and technical changes — including every API change, IAM permission update, managed policy change, and security bulletin. Essential for staying current on new AWS attack surfaces that affect detection coverage.",t:["cl"]},
   {n:"Orca Security Research",u:"research.orca.security",d:"Cloud security research from Orca's Research Pod. Publishes findings from scanning billions of real-world cloud assets — attack path analysis, IAM risk patterns, and novel techniques including AI-induced lateral movement.",t:["cl"]},
+  {n:"Cloud Security Wiki",u:"secwiki.cloud",d:"Cloud security knowledge repository curated by WithSecure's consulting team. Covers AWS, Azure, cloud-adjacent tooling including Jenkins, Vault, and GitHub Enterprise, and SaaS platforms. Practitioner-written offensive and defensive reference.",t:["cl"]},
+  {n:"CloudSecList",u:"cloudseclist.com",d:"Weekly cloud-native security newsletter hand-curated by Marco Lancini. Covers the most important cloud security research, news, and technical changes across AWS, Azure, and GCP. Recommended by Scott Piper and Jason Chan.",t:["cl"]},
+  {n:"Panther Analysis queries",u:"github.com/panther-labs/panther-analysis/tree/develop/queries",d:"Open-source detection rule library from Panther Labs covering AWS CloudTrail, Okta, GitHub, GSuite, and other SaaS sources. Rules are written in Python by engineers who built a cloud-native SIEM — useful reference for cloud and SaaS detection patterns.",t:["cl"]},
   {n:"Datadog Security Labs articles",u:"securitylabs.datadoghq.com/articles",d:"Research blog from the team behind Stratus Red Team, pathfinding.cloud, and the Cloud Security Atlas. Publishes cloud attack research with full detection guidance.",t:["cl","tr"]},
   {n:"purpleshellsecurity adversary-lab-aws",u:"github.com/purpleshellsecurity/adversary-lab-aws",d:"Modular Terraform AWS detection lab with Stratus Red Team pre-installed. Provisions a realistic attack environment for approximately $9-15 per month.",t:["cl","tf"]},
   {n:"awesome-kubernetes-threat-detection",u:"github.com/jatrost/awesome-kubernetes-threat-detection",d:"Curated Kubernetes threat detection resources: Sigma cloud rules, Falco rules, Tracee signatures, attack simulation tools, and reference material.",t:["k8"]},
@@ -250,6 +257,7 @@ const S=[
   {n:"The Record by Recorded Future",u:"therecord.media",d:"High-quality threat intelligence news covering nation-state activity, ransomware group tracking, and vulnerability exploitation.",t:["tr"]},
   {n:"Wiz Research",u:"wiz.io/research",d:"Cloud-focused security research from Wiz. Publishes novel cloud attack techniques and maintains the Cloud Threat Landscape intelligence database.",t:["tr","cl"]},
   {n:"tl;dr sec",u:"tldrsec.com",d:"Weekly curated security newsletter for 90,000+ practitioners. Archive is fully searchable by topic.",t:["tr"]},
+  {n:"TrustedSec blog",u:"trustedsec.com/blog",d:"Technical detection engineering and threat research from TrustedSec's TAC team. Includes a multi-part Windows telemetry series, the Sysmon Community Guide video series, and purple team research on AD attack detection.",t:["tr","de"]},
 ]},
 {id:"adversary",title:"Adversary Technique Reference",color:"#ffa198",items:[
   {n:"ired.team",u:"ired.team",d:"Publicly available red teaming notes covering code execution, injection, defense evasion, lateral movement, and persistence. Documents attacker implementation details and artefacts produced.",t:["tr","de"]},
